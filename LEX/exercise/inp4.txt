@@ -1,0 +1,19 @@
+//You should see this
+
+int main()
+{	//See this
+	printf("Not see this"); /* See this also
+	Here..
+	*/
+} 
+
+/ Def not see this
+
+Nope don't see this
+
+/*Should see this*/
+
+/*Multi
+LINE
+comment should
+	be working..*/
