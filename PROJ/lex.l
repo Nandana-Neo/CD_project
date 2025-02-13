@@ -1,4 +1,4 @@
-/***********DECLARATIONS*****************/
+/****************DECLARATIONS*****************/
 
 %{
 
@@ -8,13 +8,16 @@
     #include "./y.tab.h"
 
 %}
-/*********REG DEF***********/
+
+/********************REG DEF******************/
+
 letter [a-zA-Z]
 digit [0-9]
 id {letter}({letter}|{digit})*
 num {digit}+
 
-/***********RULES************/
+/*********************RULES*******************/
+
 %%
 "BcsMain"                   {
                                 return BCSMAIN;
@@ -52,20 +55,20 @@ num {digit}+
 "!="                        {
                                 return RELOP;
                             }
-
 [<>]                        {
                                 return RELOP;
                             }
-
 [{}()=;+*]                  {
                                 return *yytext;
                             }
-[^ \n\t]                      {
+[^ \n\t]                    {
                                 printf("Syntax Error\n"); exit(1); 
                             }      
                                               
 %%
-/************AUX FNS*************/
+
+/*************AUXILLARY FUNCTIONS*************/
+
 int yywrap() {
     return 1;
 }
