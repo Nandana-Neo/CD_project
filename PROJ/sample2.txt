@@ -5,18 +5,24 @@ BcsMain
 	fact = 1;
 	i = 1;
 	temp = fact;
+	
 	while (i <= num)
 	{
 		if (i != 1)
 		{
-			temp = fact; fact = 0; j = 0;
+			temp = fact; 
+			fact = 0; 
+			j = 0;
 			while (j < i)
 			{
-				fact = fact + temp; j = j + 1;
-			};
+				fact = fact + temp; 
+				j = j + 1
+			}
 		}
 		else
-		{ fact = 1; }
-		i = i + 1;
-	};
+		{ 
+			fact = 1 
+		};
+		i = i + 1
+	}
 }
