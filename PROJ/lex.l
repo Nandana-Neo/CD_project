@@ -60,9 +60,10 @@ num {digit}+
 [{}()=;+*]                  {
                                 return *yytext;
                             }
-[^ \n]                        {
-                                printf("Unexpected character: %c\n", *yytext); exit(1); 
-                            }                        
+[^ \n]                      {
+                                printf("Syntax Error\n"); exit(1); 
+                            }      
+                                              
 %%
 /************AUX FNS*************/
 int yywrap() {

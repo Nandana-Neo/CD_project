@@ -18,8 +18,8 @@ program :   BCSMAIN '{' declist stmtlist '}'  {
 }
         ;
 
-declist :   declist decl    {}
-        |   decl            {}
+declist :   declist decl
+        |   decl            
         ;
 
 decl    :   type ID ';'
@@ -53,6 +53,7 @@ term    :   term '*' factor
 factor  :   ID
         |   NUM
         ;
+
 %%
 
 
