@@ -1,16 +1,9 @@
 BcsMain
 {
-	int a; bool check; int b;
-	a = 5469;
-	check = false;
-	b = 3;
-	while (b < a)
-		{b = b + b};
-	int c;
-	c = c * b;
-	if (c > a)
-		{int d; d = 10}
-        else
-		{c = 10};
-        c = 0
+    int a; bool d; int b; int c;
+    a = 5469;
+    d = 0;
+    b = 1000;
+    c = 10;
+    c = 0
 }

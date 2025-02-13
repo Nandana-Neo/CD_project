@@ -60,7 +60,7 @@ num {digit}+
 [{}()=;+*]                  {
                                 return *yytext;
                             }
-[^ \n]                      {
+[^ \n\t]                      {
                                 printf("Syntax Error\n"); exit(1); 
                             }      
                                               
