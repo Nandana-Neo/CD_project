@@ -42,5 +42,3 @@ gunzip -c CS02_7.gz | tar -xf -
 - `.tar.gz` = Tar archive compressed with `gzip`  
 - `.gz` alone is typically for single files, but renaming a `.tar.gz` to `.gz` works the same  
 - Use `tar -czvf` to compress a folder and `tar -xzvf` to extract it  
-
-Let me know if you need further clarifications! 🚀
