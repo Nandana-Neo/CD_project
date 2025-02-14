@@ -7,4 +7,4 @@ cd "$1"
 yacc yacc.y -d
 lex lex.l
 gcc y.tab.c lex.yy.c -o a.out
-./a.out < input.txt
+./a.out $2

@@ -20,7 +20,7 @@
 %left '*'
 %%
 start : expr '\n'			{printf("Complete\n");exit(1);}
-      ;
+  	  ;
 
 
 expr : IF cond THEN expr ELSE expr 	{printf("Level:%d\n",$1);}
