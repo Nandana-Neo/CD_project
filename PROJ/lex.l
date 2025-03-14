@@ -38,12 +38,12 @@ num {digit}+
                                 return BOOL;
                             }
 {id}                        {
-                                yylval.s.code = strdup("");
+                                yylval.s.code = strdup("\0");
                                 yylval.s.val = strdup(yytext);
                                 return ID;
                             }
 {num}                       {
-                                yylval.s.code = strdup("");
+                                yylval.s.code = strdup("\0");
                                 yylval.s.val = strdup(yytext);
                                 return NUM;
                             }

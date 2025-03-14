@@ -16,7 +16,8 @@
 
         char *gen(char *arg1, char *arg2, char *arg3) {
                 char * parent = (char *)malloc(1000);
-                sprintf(parent,"%s %s %s\n",  arg1, arg2, arg3);
+                char* semi = (char*)malloc(10);
+                sprintf(parent,"%s %s %s",  arg1, arg2, arg3);
                 return parent;
         }
 %}
@@ -33,7 +34,14 @@
 %%
 
 program :   BCSMAIN '{' declist stmtlist '}'    {
-                                                        printf("%s\n",$<s>4.code);
+                                                        // printf("%s\n",$<s>4.code);
+                                                        FILE* codeFile = fopen("3addr_code.txt", "w");
+                                                        if (!codeFile) {
+                                                                perror("fopen");
+                                                                return 1;
+                                                        }
+                                                        fprintf(codeFile, "%s", $<s>4.code);
+                                                        fclose(codeFile);
                                                         printf("Parsing Successful\n");
                                                         exit(0);
                                                 }
@@ -52,7 +60,7 @@ type    :   INT
 
 stmtlist:   stmtlist ';' stmt   {
         char * temp=(char*)malloc(10);
-        sprintf(temp,"");
+        sprintf(temp,"\0");
         $<s>$.code=gen($<s>1.code,temp,$<s>3.code);
         }
 
@@ -68,6 +76,7 @@ stmt    :   ID '=' aexpr        {
                 char* temp=(char*)malloc(10);
                 sprintf(temp,"=");
                 char* curr=gen(left_val,temp,right_val);
+                sprintf(curr,"%s%s\n",curr,";");
                 $<s>$.code=gen(left_code,right_code,curr);
 
                 free($<s>1.val);
@@ -76,7 +85,7 @@ stmt    :   ID '=' aexpr        {
                 free($<s>3.code);
                 free(temp);
                 free(curr);
-                
+
         }
 
         |   IF '(' expr ')' '{' stmtlist '}' ELSE '{' stmtlist '}'
@@ -104,6 +113,7 @@ aexpr   :   aexpr '+' aexpr     {
                 char* equal=(char*)malloc(10);
                 sprintf(equal,"=");
                 char* curr_code = gen(temp1,equal,lhs);
+                sprintf(curr_code,"%s%s\n",curr_code,";");
                 $<s>$.code = gen(left_code,right_code,curr_code);
                 free($<s>1.val);
                 free($<s>3.val);
@@ -134,6 +144,7 @@ term    :   term '*' factor     {
                 char* equal=(char*)malloc(10);
                 sprintf(equal,"=");
                 char* curr_code = gen(temp1,equal,rhs);
+                sprintf(curr_code,"%s%s\n",curr_code,";");
                 $<s>$.code = gen(left_code,right_code,curr_code);
                 free($<s>1.val);
                 free($<s>3.val);

@@ -1,7 +1,9 @@
 BcsMain 
 {
-    int sum; int i; int n;
-    n=10;
-    i=1; sum=0;
-    sum = n*10+sum+45*i+10
+int sum; int i; int n; int mus; int j; int m;
+n=10;
+i=1;sum=0;
+sum = n*10+sum+45*i+10+34;
+m=10;
+mus = m*10+sum+45*j+10+34
 }
