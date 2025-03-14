@@ -1,21 +1,42 @@
 %{
-    #include <stdio.h>
-    #include <string.h>
-    #include <stdlib.h>
-    int yylex();
-    int yyerror();
-    extern FILE* yyin;
+        #include <stdio.h>
+        #include <string.h>
+        #include <stdlib.h>
+        int yylex();
+        int yyerror();
+        extern FILE* yyin;
+
+        int tempCount = 0;
+
+        char *newTemp() {
+                char *temp = (char *)malloc(10);        //change?
+                sprintf(temp, "t%d", tempCount++);
+                return temp;
+        }
+
+        char *gen(char *arg1, char *arg2, char *arg3) {
+                char * parent = (char *)malloc(1000);
+                sprintf(parent,"%s %s %s\n",  arg1, arg2, arg3);
+                return parent;
+        }
 %}
 
+%union {
+        struct {
+                char* code;
+                char* val;
+        } s;
+}
 %token BCSMAIN IF ELSE WHILE INT BOOL ID RELOP NUM
 %nonassoc BCSMAIN IF ELSE WHILE INT BOOL RELOP
 
 %%
 
-program :   BCSMAIN '{' declist stmtlist '}'  {
-    printf("Parsing Successful\n");
-    exit(0);
-}
+program :   BCSMAIN '{' declist stmtlist '}'    {
+                                                        printf("%s\n",$<s>4.code);
+                                                        printf("Parsing Successful\n");
+                                                        exit(0);
+                                                }
         ;
 
 declist :   declist decl
@@ -29,29 +50,116 @@ type    :   INT
         |   BOOL
         ;
 
-stmtlist:   stmtlist ';' stmt
-        |   stmt
+stmtlist:   stmtlist ';' stmt   {
+        char * temp=(char*)malloc(10);
+        sprintf(temp,"");
+        $<s>$.code=gen($<s>1.code,temp,$<s>3.code);
+        }
+
+        |   stmt                {$<s>$=$<s>1;}
         ;
 
-stmt    :   ID '=' aexpr
+stmt    :   ID '=' aexpr        {
+                char* left_code = $<s>1.code;
+                char* right_code=$<s>3.code;
+                char* left_val=$<s>1.val;
+                char* right_val=$<s>3.val; 
+
+                char* temp=(char*)malloc(10);
+                sprintf(temp,"=");
+                char* curr=gen(left_val,temp,right_val);
+                $<s>$.code=gen(left_code,right_code,curr);
+
+                free($<s>1.val);
+                free($<s>3.val);
+                free($<s>1.code);
+                free($<s>3.code);
+                free(temp);
+                free(curr);
+                
+        }
+
         |   IF '(' expr ')' '{' stmtlist '}' ELSE '{' stmtlist '}'
         |   WHILE '(' expr ')' '{' stmtlist '}'
         ;
 
-expr    :   aexpr RELOP aexpr
-        |   aexpr
+expr    :   aexpr RELOP aexpr   
+        |   aexpr               {
+                $<s>$.code=$<s>1.code;
+                $<s>$.val=$<s>1.val;
+        }   
         ;
 
-aexpr   :   aexpr '+' aexpr
-        |   term
+aexpr   :   aexpr '+' aexpr     {
+                char* temp1=newTemp();
+                $<s>$.val=temp1;
+
+
+                char* left_code=$<s>1.code;
+                char* right_code=$<s>3.code;
+                char* temp=(char*)malloc(10);
+                sprintf(temp,"+");
+                char* lhs = gen($<s>1.val,temp,$<s>3.val);
+
+                char* equal=(char*)malloc(10);
+                sprintf(equal,"=");
+                char* curr_code = gen(temp1,equal,lhs);
+                $<s>$.code = gen(left_code,right_code,curr_code);
+                free($<s>1.val);
+                free($<s>3.val);
+                free($<s>1.code);
+                free($<s>3.code);
+                free(temp);
+                free(equal);
+                free(curr_code);
+        }
+
+        |   term                {
+                $<s>$.code=$<s>1.code;
+                $<s>$.val=$<s>1.val;
+        }
         ;
 
-term    :   term '*' factor
-        |   factor
+term    :   term '*' factor     {
+                char* temp1=newTemp();
+                $<s>$.val=temp1;
+
+
+                char* left_code=$<s>1.code;
+                char* right_code=$<s>3.code;
+                char* temp=(char*)malloc(10);
+                sprintf(temp,"*");
+                char* rhs = gen($<s>1.val,temp,$<s>3.val);
+
+                char* equal=(char*)malloc(10);
+                sprintf(equal,"=");
+                char* curr_code = gen(temp1,equal,rhs);
+                $<s>$.code = gen(left_code,right_code,curr_code);
+                free($<s>1.val);
+                free($<s>3.val);
+                free($<s>1.code);
+                free($<s>3.code);
+                free(temp);
+                free(equal);
+                free(curr_code);
+                
+        }
+
+        |   factor              {
+                $<s>$.val=$<s>1.val;
+                $<s>$.code=$<s>1.code;
+        }
         ;
 
-factor  :   ID
-        |   NUM
+factor  :   ID          {
+                $<s>$.val=$<s>1.val;
+                $<s>$.code=$<s>1.code;
+        }
+
+        |   NUM         {
+                $<s>$.val=$<s>1.val;
+                $<s>$.code=$<s>1.code;
+        }
         ;
 
 %%

@@ -38,9 +38,13 @@ num {digit}+
                                 return BOOL;
                             }
 {id}                        {
+                                yylval.s.code = strdup("");
+                                yylval.s.val = strdup(yytext);
                                 return ID;
                             }
 {num}                       {
+                                yylval.s.code = strdup("");
+                                yylval.s.val = strdup(yytext);
                                 return NUM;
                             }
 "<="                        {
