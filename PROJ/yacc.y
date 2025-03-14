@@ -16,8 +16,7 @@
 
         char *gen(char *arg1, char *arg2, char *arg3) {
                 char * parent = (char *)malloc(1000);
-                char* semi = (char*)malloc(10);
-                sprintf(parent,"%s %s %s",  arg1, arg2, arg3);
+                sprintf(parent,"%s%s%s",  arg1, arg2, arg3);
                 return parent;
         }
 %}
@@ -74,7 +73,7 @@ stmt    :   ID '=' aexpr        {
                 char* right_val=$<s>3.val; 
 
                 char* temp=(char*)malloc(10);
-                sprintf(temp,"=");
+                sprintf(temp," = ");
                 char* curr=gen(left_val,temp,right_val);
                 sprintf(curr,"%s%s\n",curr,";");
                 $<s>$.code=gen(left_code,right_code,curr);
@@ -107,11 +106,11 @@ aexpr   :   aexpr '+' aexpr     {
                 char* left_code=$<s>1.code;
                 char* right_code=$<s>3.code;
                 char* temp=(char*)malloc(10);
-                sprintf(temp,"+");
+                sprintf(temp," + ");
                 char* lhs = gen($<s>1.val,temp,$<s>3.val);
 
                 char* equal=(char*)malloc(10);
-                sprintf(equal,"=");
+                sprintf(equal," = ");
                 char* curr_code = gen(temp1,equal,lhs);
                 sprintf(curr_code,"%s%s\n",curr_code,";");
                 $<s>$.code = gen(left_code,right_code,curr_code);
@@ -138,11 +137,11 @@ term    :   term '*' factor     {
                 char* left_code=$<s>1.code;
                 char* right_code=$<s>3.code;
                 char* temp=(char*)malloc(10);
-                sprintf(temp,"*");
+                sprintf(temp," * ");
                 char* rhs = gen($<s>1.val,temp,$<s>3.val);
 
                 char* equal=(char*)malloc(10);
-                sprintf(equal,"=");
+                sprintf(equal," = ");
                 char* curr_code = gen(temp1,equal,rhs);
                 sprintf(curr_code,"%s%s\n",curr_code,";");
                 $<s>$.code = gen(left_code,right_code,curr_code);
