@@ -15,7 +15,7 @@
         }
 
         char *gen(char *arg1, char *arg2, char *arg3) {
-                char * parent = (char *)malloc(1000);
+                char * parent = (char *)malloc(10000);
                 sprintf(parent,"%s%s%s",  arg1, arg2, arg3);
                 return parent;
         }
